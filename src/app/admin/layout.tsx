@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   BarChart3, PlusCircle, List, Settings, 
-  Users, Home, MessageSquare, LogOut
+  Users, Home, MessageSquare, LogOut, Building
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ export default function AdminLayout({
     { name: "Dashboard", icon: <BarChart3 size={20} />, href: "/admin" },
     { name: "Add Property", icon: <PlusCircle size={20} />, href: "/admin/upload" },
     { name: "My Listings", icon: <List size={20} />, href: "/admin/listings" },
+    { name: "Properties", icon: <Building size={20} />, href: "/admin/properties" },
     { name: "Viewers", icon: <Users size={20} />, href: "/admin/viewers" },
     { name: "Settings", icon: <Settings size={20} />, href: "/admin/settings" },
   ];

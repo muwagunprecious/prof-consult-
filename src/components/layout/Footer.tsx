@@ -1,8 +1,18 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Share2, Globe, MessageCircle, Users } from "lucide-react";
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  // Hide the footer on all admin-related routes
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="bg-brand-beige pt-20 pb-10 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">

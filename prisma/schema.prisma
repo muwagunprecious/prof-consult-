@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model PropertyRecord {
+  id             String   @id @default(uuid())
+  tenantName     String
+  propertyName   String
+  amountPaid     Float
+  amountBalanced Float
+  dueDate        String
+  createdAt      DateTime @default(now())
+}
+
+model Listing {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  location           String
+  price              String
+  period             String   @default("/mo")
+  images             String[]
+  description        String   @default("")
+  firstPayment       String   @default("")
+  subsequentPayment  String   @default("")
+  amenities          String[]
+  rating             Float    @default(5.0)
+  type               String
+  createdAt          DateTime @default(now())
+}
+
+model BookingLead {
+  id           String   @id @default(uuid())
+  listingId    Int
+  listingTitle String
+  whatsapp     String
+  createdAt    DateTime @default(now())
+}

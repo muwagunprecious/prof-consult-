@@ -1,19 +1,64 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { 
   Users, Home, MessageSquare, TrendingUp, 
-  ArrowUpRight, ArrowDownRight, Eye, MousePointer2 
+  ArrowUpRight, ArrowDownRight, Eye, MousePointer2, Loader2, Phone
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+interface BookingLead {
+  id: string;
+  listingId: number;
+  listingTitle: string;
+  whatsapp: string;
+  createdAt: string;
+}
+
 const AdminDashboard = () => {
+  const [leads, setLeads] = useState<BookingLead[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const res = await fetch("/api/leads");
+        if (res.ok) {
+          const data = await res.json();
+          setLeads(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch leads:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
   const stats = [
     { name: "Total Listings", value: "24", change: "+2", increase: true, icon: <Home size={24} /> },
     { name: "Live Viewers", value: "156", change: "+12%", increase: true, icon: <Eye size={24} /> },
-    { name: "Total Queries", value: "89", change: "-3", increase: false, icon: <MessageSquare size={24} /> },
+    { name: "Total Queries", value: isLoading ? "..." : leads.length.toString(), change: leads.length > 0 ? `+${leads.length}` : "0", increase: leads.length > 0, icon: <MessageSquare size={24} /> },
     { name: "CTR", value: "4.2%", change: "+0.8%", increase: true, icon: <MousePointer2 size={24} /> },
   ];
+
+  const getRelativeTime = (dateStr: string) => {
+    try {
+      const created = new Date(dateStr);
+      const diffMs = Date.now() - created.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      if (diffMins < 1) return "just now";
+      if (diffMins < 60) return `${diffMins}m ago`;
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return `${diffHours}h ago`;
+      return created.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    } catch {
+      return "some time ago";
+    }
+  };
 
   return (
     <div className="p-8 md:p-12 lg:p-16 pt-32">
@@ -83,30 +128,54 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Recent Inquiries List */}
+          {/* Recent Inquiries List - Dynamic Leads */}
           <div className="bg-white p-10 rounded-[40px] shadow-premium border border-gray-100 flex flex-col">
              <h3 className="text-xl font-extrabold text-brand-charcoal mb-8">Recent Queries</h3>
-             <div className="space-y-6 flex-1">
-                {[
-                  { name: "Alex T.", target: "Marble Arch", time: "2m ago" },
-                  { name: "Sarah C.", target: "Bloomsbury", time: "15m ago" },
-                  { name: "James W.", target: "Kensington", time: "1h ago" },
-                  { name: "Elena R.", target: "Marylebone", time: "3h ago" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center font-bold text-brand-charcoal text-xs">
-                      {item.name[0]}
-                    </div>
-                    <div className="flex-1 overflow-hidden">
-                      <p className="text-sm font-bold text-brand-charcoal truncate">{item.name} inquired about {item.target}</p>
-                      <p className="text-xs text-brand-orange font-medium">{item.time}</p>
-                    </div>
+             <div className="space-y-6 flex-1 overflow-y-auto max-h-[250px] pr-2">
+                {isLoading ? (
+                  <div className="h-full flex items-center justify-center text-gray-400 py-8">
+                    <Loader2 className="animate-spin text-brand-orange mr-2" size={18} />
+                    <span className="text-xs font-semibold">Loading queries...</span>
                   </div>
-                ))}
+                ) : leads.length === 0 ? (
+                  <div className="h-full flex items-center justify-center text-center py-8 text-gray-400">
+                    <p className="text-xs font-bold">No WhatsApp reservations received yet.</p>
+                  </div>
+                ) : (
+                  leads.slice(0, 4).map((lead, i) => {
+                    const cleanPhone = lead.whatsapp.replace(/[^0-9]/g, "");
+                    const whatsappLink = `https://wa.me/${cleanPhone}`;
+                    
+                    return (
+                      <div key={lead.id} className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-brand-orange/5 text-brand-orange rounded-xl flex items-center justify-center font-black text-xs shrink-0">
+                          Q
+                        </div>
+                        <div className="flex-1 overflow-hidden">
+                          <p className="text-xs font-bold text-brand-charcoal truncate">
+                            Inquiry on {lead.listingTitle}
+                          </p>
+                          <a 
+                            href={whatsappLink} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-xs text-green-600 hover:text-green-500 font-black inline-flex items-center gap-1"
+                          >
+                            <Phone size={12} />
+                            {lead.whatsapp}
+                          </a>
+                          <p className="text-[10px] text-gray-400 font-semibold">{getRelativeTime(lead.createdAt)}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
              </div>
-             <button className="w-full py-4 mt-8 bg-brand-beige text-brand-charcoal rounded-2xl font-bold hover:bg-brand-orange hover:text-white transition-all">
-                View All Messages
-             </button>
+             <Link href="/admin/viewers" className="w-full">
+               <button className="w-full py-4 mt-8 bg-brand-beige text-brand-charcoal rounded-2xl font-bold hover:bg-brand-orange hover:text-white transition-all text-xs cursor-pointer outline-none">
+                  View All Queries
+               </button>
+             </Link>
           </div>
         </div>
       </div>

@@ -89,7 +89,7 @@ const ListingsManagement = () => {
                         </span>
                       </td>
                       <td className="px-8 py-6">
-                        <p className="font-bold text-brand-charcoal">£{item.price}<span className="text-[10px] text-gray-400">/pw</span></p>
+                        <p className="font-bold text-brand-charcoal">₦{item.price}<span className="text-[10px] text-gray-400">/mo</span></p>
                       </td>
                       <td className="px-8 py-6 text-center">
                         <div className="flex flex-col items-center">
