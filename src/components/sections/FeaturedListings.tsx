@@ -50,7 +50,7 @@ const FeaturedListings = () => {
   };
 
   return (
-    <section className="py-16 bg-white border-t border-gray-100">
+    <section className="py-8 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
@@ -78,7 +78,7 @@ const FeaturedListings = () => {
             <p className="font-bold text-sm">Fetching featured spaces...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
             {listings.map((item, index) => {
               const isWishlisted = wishlist.includes(item.id);
               // Use first image or fallback
@@ -96,7 +96,7 @@ const FeaturedListings = () => {
                   className="group cursor-pointer flex flex-col h-full bg-white rounded-2xl overflow-hidden"
                 >
                   {/* Image Container with Airbnb Style Floating Heart */}
-                  <Link href={`/listings/${item.id}`} className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden mb-3 bg-gray-100 block">
+                  <Link href={`/listings/${item.id}`} className="relative aspect-[16/9] w-48 rounded-lg overflow-hidden mb-2 bg-gray-100 block">
                     <img
                       src={primaryImage}
                       alt={item.title}
