@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 
-export async function POST(request: Request) {
+if (request.method !== 'POST') {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
