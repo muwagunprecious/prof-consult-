@@ -29,7 +29,7 @@ const ListingsManagement = () => {
           ...l,
           status: l.status || "Active",
           leads: leadData.filter((lead: any) => lead.listingId === l.id),
-        })));
+        }));
         setItems(listingsWithLeads);
       } catch (err) {
         console.error('Error fetching data', err);
