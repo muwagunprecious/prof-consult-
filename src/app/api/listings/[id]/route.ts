@@ -1,17 +1,29 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: idStr } = await params;
     const id = parseInt(idStr, 10);
-    await prisma.listing.delete({ where: { id } });
-    return NextResponse.json({ success: true });
+    const listing = await prisma.listing.findUnique({ where: { id } });
+    if (!listing) {
+      return NextResponse.json({ error: 'Listing not found' }, { status: 404 });
+    }
+    return NextResponse.json(listing);
   } catch (error) {
-    console.error("DELETE /api/listings/[id] error:", error);
-    return NextResponse.json({ error: "Failed to delete listing" }, { status: 500 });
+    console.error('GET /api/listings/[id] error:', error);
+    return NextResponse.json({ error: 'Failed to fetch listing' }, { status: 500 });
   }
 }
+
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
+  await prisma.listing.delete({ where: { id } });
+  return NextResponse.json({ success: true });
+}
+
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
