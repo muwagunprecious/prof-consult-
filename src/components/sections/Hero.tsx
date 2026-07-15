@@ -72,7 +72,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-[8vw] sm:text-[5vw] font-light tracking-tight text-[#1A1A1A] leading-none mb-2 select-none"
+            className="text-[8vw] sm:text-[4.8vw] font-stylish-sans font-light tracking-tight text-[#1A1A1A] leading-none mb-2 select-none"
           >
             Find your next
           </motion.h1>
@@ -81,7 +81,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.1 }}
-            className="text-[10vw] sm:text-[5.5vw] font-editorial italic tracking-tight text-[#FF6B00] leading-none mb-2 select-none"
+            className="text-[11vw] sm:text-[6.5vw] font-editorial italic tracking-tight text-[#FF6B00] leading-none mb-3 select-none"
           >
             premium home
           </motion.h1>
@@ -90,7 +90,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[8vw] sm:text-[4.5vw] font-black tracking-tight text-[#1A1A1A] leading-none mb-8 select-none"
+            className="text-[8vw] sm:text-[4.5vw] font-stylish-sans font-bold tracking-tight text-[#1A1A1A] leading-none mb-8 select-none"
           >
             anywhere near campus.
           </motion.h1>

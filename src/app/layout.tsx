@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans, Instrument_Serif } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,11 +9,15 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
 });
-const instrumentSerif = Instrument_Serif({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: "400",
+  variable: "--font-space-grotesk",
+});
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-instrument",
+  variable: "--font-cormorant",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable} ${instrumentSerif.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable} ${spaceGrotesk.variable} ${cormorant.variable} scroll-smooth`}>
       <body className="antialiased">
         <Navbar />
         <main>{children}</main>
