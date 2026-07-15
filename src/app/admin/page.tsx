@@ -70,35 +70,7 @@ const AdminDashboard = () => {
           <p className="text-gray-500 text-lg">Welcome back. Here's a premium summary of your platform's performance.</p>
         </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 rounded-[32px] shadow-premium border border-gray-100 flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 bg-brand-orange/5 text-brand-orange rounded-2xl flex items-center justify-center">
-                  {stat.icon}
-                </div>
-                <div className={cn(
-                  "flex items-center gap-1 text-sm font-bold px-3 py-1 rounded-full",
-                  stat.increase ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50"
-                )}>
-                  {stat.change}
-                  {stat.increase ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-                </div>
-              </div>
-              <div>
-                <p className="text-gray-400 font-bold uppercase tracking-wider text-xs mb-1">{stat.name}</p>
-                <h3 className="text-3xl font-extrabold text-brand-charcoal">{stat.value}</h3>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+
 
         {/* Middle Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
