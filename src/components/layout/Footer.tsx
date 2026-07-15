@@ -77,11 +77,11 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-gray-500">
                 <MapPin className="text-brand-orange shrink-0" size={18} />
-                <span>123 Advisor Lane, Bloomsbury, London, UK</span>
+                <span>daleko ibogun</span>
               </li>
               <li className="flex items-center gap-3 text-gray-500">
                 <Phone className="text-brand-orange shrink-0" size={18} />
-                <span>+44 (0) 20 1234 5678</span>
+                <span>+234 706 048 0048</span>
               </li>
               <li className="flex items-center gap-3 text-gray-500">
                 <Mail className="text-brand-orange shrink-0" size={18} />
