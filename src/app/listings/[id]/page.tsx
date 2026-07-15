@@ -256,7 +256,7 @@ const PropertyDetails = () => {
               <div className="p-5 bg-green-50 border border-green-100 rounded-2xl flex flex-col items-center text-center space-y-2">
                 <CheckCircle2 className="text-green-500" size={28} />
                 <p className="font-extrabold text-brand-charcoal text-sm">Seat Reserved!</p>
-                <p className="text-xs text-gray-500 font-medium">Sarah will contact you on WhatsApp shortly.</p>
+                <p className="text-xs text-gray-500 font-medium">Prof will contact you on WhatsApp shortly.</p>
               </div>
             ) : (
               <form onSubmit={handleReserve} className="space-y-3">
@@ -409,7 +409,7 @@ const PropertyDetails = () => {
                   <div className="p-6 bg-green-50 border border-green-100 rounded-2xl flex flex-col items-center text-center space-y-3">
                     <CheckCircle2 className="text-green-500" size={32} />
                     <h4 className="font-extrabold text-brand-charcoal text-sm">Seat Reserved!</h4>
-                    <p className="text-xs text-gray-500 font-medium">Sarah will contact you on WhatsApp shortly.</p>
+                    <p className="text-xs text-gray-500 font-medium">Prof will contact you on WhatsApp shortly.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleReserve} className="space-y-4">

@@ -15,7 +15,7 @@ const MessagingPage = () => {
   const chats = [
     {
       id: 1,
-      name: "Sarah Jenkins",
+      name: "Prof Consult",
       role: "Housing Advisor",
       lastMessage: "The Marble Arch studio is still available for October. Would you like to...",
       time: "10:42 AM",
@@ -46,10 +46,10 @@ const MessagingPage = () => {
   ];
 
   const messages = [
-    { sender: "Sarah Jenkins", text: "Hello! Thank you for inquiring about the Luxury Studio at Marble Arch.", time: "10:30 AM", type: "received" },
-    { sender: "Me", text: "Hi Sarah! Is it still available for a move-in date in October?", time: "10:35 AM", type: "sent" },
-    { sender: "Sarah Jenkins", text: "Yes, it is still available for October. We just verified the latest amenities list.", time: "10:40 AM", type: "received" },
-    { sender: "Sarah Jenkins", text: "The Marble Arch studio is still available for October. Would you like to schedule a virtual tour this afternoon?", time: "10:42 AM", type: "received" },
+    { sender: "Prof Consult", text: "Hello! Thank you for inquiring about the Luxury Studio at Marble Arch.", time: "10:30 AM", type: "received" },
+    { sender: "Me", text: "Hi Prof! Is it still available for a move-in date in October?", time: "10:35 AM", type: "sent" },
+    { sender: "Prof Consult", text: "Yes, it is still available for October. We just verified the latest amenities list.", time: "10:40 AM", type: "received" },
+    { sender: "Prof Consult", text: "The Marble Arch studio is still available for October. Would you like to schedule a virtual tour this afternoon?", time: "10:42 AM", type: "received" },
   ];
 
   return (
@@ -111,7 +111,7 @@ const MessagingPage = () => {
           <header className="p-6 border-b border-gray-50 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <img src={chats[0].image} className="w-12 h-12 rounded-2xl object-cover" alt="Sarah" />
+                <img src={chats[0].image} className="w-12 h-12 rounded-2xl object-cover" alt="Prof Consult" />
                 <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
               </div>
               <div>
@@ -160,7 +160,7 @@ const MessagingPage = () => {
             ))}
             {/* Fake typing indicator */}
             <div className="flex items-start gap-2">
-              <img src={chats[0].image} className="w-8 h-8 rounded-lg object-cover" alt="Sarah mini" />
+              <img src={chats[0].image} className="w-8 h-8 rounded-lg object-cover" alt="Prof Consult mini" />
               <div className="bg-brand-beige px-4 py-3 rounded-[20px] rounded-tl-none flex gap-1">
                 <div className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                 <div className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
