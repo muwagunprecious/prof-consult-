@@ -1,22 +1,27 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Home as HomeIcon, Star } from "lucide-react";
+import { Search, MapPin, Home as HomeIcon } from "lucide-react";
 import Link from "next/link";
 
 const Hero = () => {
   return (
     <section className="relative bg-[#F6F6F3] p-3 sm:p-6 md:p-8 min-h-screen flex items-center justify-center">
       
-      {/* Outer framed container (Lume AI styled border and background) */}
-      <div className="relative w-full max-w-7xl bg-[#F6F6F3] rounded-[32px] sm:rounded-[48px] border-[8px] sm:border-[20px] border-white shadow-premium overflow-hidden px-4 sm:px-8 md:px-12 pt-16 pb-16 md:pb-20 flex flex-col items-center justify-between min-h-[85vh]">
-        
-        {/* Soft background glow blobs */}
-        <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#EBE7DF]/35 rounded-full blur-3xl pointer-events-none" />
+      {/* Outer framed container with the house image as the background */}
+      <div 
+        className="relative w-full max-w-7xl bg-[#F6F6F3] rounded-[32px] sm:rounded-[48px] border-[8px] sm:border-[20px] border-white shadow-premium overflow-hidden px-4 sm:px-8 md:px-12 pt-16 pb-16 md:pb-20 flex flex-col items-center justify-between min-h-[85vh]"
+        style={{
+          backgroundImage: "url('/modern_villa.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Soft semi-transparent overlay to ensure all text and cards remain highly readable */}
+        <div className="absolute inset-0 bg-[#F6F6F3]/85 sm:bg-[#F6F6F3]/80 z-0" />
 
         {/* 1. Top Badges & Tagline */}
-        <div className="relative z-10 flex flex-col items-center mb-6">
+        <div className="relative z-10 flex flex-col items-center mb-4">
           <motion.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -27,7 +32,7 @@ const Hero = () => {
         </div>
 
         {/* 2. Central Title Typographic Layout (Space Grotesk & Cormorant Garamond) */}
-        <div className="relative w-full text-center z-10 flex flex-col items-center mb-8">
+        <div className="relative w-full text-center z-10 flex flex-col items-center mb-16">
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,16 +61,14 @@ const Hero = () => {
           </motion.h1>
         </div>
 
-        {/* 3. Center Modern Villa Image & Floating Cards Wrapper */}
-        {/* Relative wrapper has standard dimensions; floating cards are anchored to this wrapper so they never drift and cause layout issues */}
-        <div className="relative w-full max-w-[600px] mx-auto z-20 mt-4 mb-12 flex justify-center">
-          
+        {/* 3. Floating Stats Cards - Positioned dynamically on the left/right sides overlaying the background */}
+        <div className="absolute inset-0 pointer-events-none z-10 hidden lg:block">
           {/* Floating Card: Trust Stats (Left) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="hidden lg:flex absolute -left-28 bottom-8 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 z-30 flex-col gap-1 w-52 text-left"
+            className="absolute left-16 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 flex-col gap-1 w-52 text-left pointer-events-auto"
           >
             <span className="text-2xl font-black text-[#1A1A1A]">+1,200</span>
             <span className="text-[10px] text-gray-500 font-medium leading-relaxed">
@@ -83,7 +86,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="hidden lg:flex absolute -right-28 top-8 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 z-30 flex-col gap-1 w-56 text-left"
+            className="absolute right-16 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 flex-col gap-1 w-56 text-left pointer-events-auto"
           >
             <div className="flex justify-between items-center mb-2">
               <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Advisor Match</span>
@@ -94,24 +97,10 @@ const Hero = () => {
             <span className="text-[10px] font-semibold text-gray-400 mt-1">Verified Safety</span>
             <span className="text-[10px] font-extrabold text-[#FF6B00] uppercase tracking-wider">100% Certified Safe</span>
           </motion.div>
-
-          {/* Centered Modern Villa Container */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="w-full aspect-[16/10] sm:aspect-[16/9] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-2xl border-4 border-white"
-          >
-            <img
-              src="/modern_villa.png"
-              alt="Minimalist Modern Student Home"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
         </div>
 
         {/* 4. Bottom Area: Subtext & Search Bar layout */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-30 mt-6">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10 mt-12">
           
           {/* Subtext and link block (Left 4 cols) */}
           <div className="lg:col-span-4 text-left px-1">
