@@ -8,7 +8,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { tenantName, propertyName, amountPaid, amountBalanced, dueDate } = body;
+    const { tenantName, propertyName, amountPaid, amountBalanced, dueDate, datePaid } = body;
 
     const data: any = {};
     if (tenantName !== undefined) data.tenantName = tenantName;
@@ -16,6 +16,7 @@ export async function PUT(
     if (amountPaid !== undefined) data.amountPaid = parseFloat(amountPaid) || 0;
     if (amountBalanced !== undefined) data.amountBalanced = parseFloat(amountBalanced) || 0;
     if (dueDate !== undefined) data.dueDate = dueDate;
+    if (datePaid !== undefined) data.datePaid = datePaid;
 
     const updated = await prisma.propertyRecord.update({
       where: { id },

@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { tenantName, propertyName, amountPaid, amountBalanced, dueDate } = body;
+    const { tenantName, propertyName, amountPaid, amountBalanced, dueDate, datePaid } = body;
 
     if (!tenantName || !propertyName || !dueDate) {
       return NextResponse.json(
@@ -37,6 +37,7 @@ export async function POST(request: Request) {
         amountPaid: parseFloat(amountPaid) || 0,
         amountBalanced: parseFloat(amountBalanced) || 0,
         dueDate,
+        datePaid: datePaid || "",
       },
     });
 

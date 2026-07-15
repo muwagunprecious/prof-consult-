@@ -15,6 +15,7 @@ interface PropertyRecord {
   amountPaid: number;
   amountBalanced: number;
   dueDate: string;
+  datePaid: string;
 }
 
 export default function PropertyManagementPage() {
@@ -37,6 +38,7 @@ export default function PropertyManagementPage() {
   const [amountPaid, setAmountPaid] = useState("");
   const [amountBalanced, setAmountBalanced] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [datePaid, setDatePaid] = useState("");
 
   // Fetch from DB
   const fetchRecords = async () => {
@@ -66,6 +68,7 @@ export default function PropertyManagementPage() {
     setAmountPaid("");
     setAmountBalanced("");
     setDueDate("");
+    setDatePaid("");
     setIsOpen(true);
   };
 
@@ -77,6 +80,7 @@ export default function PropertyManagementPage() {
     setAmountPaid(record.amountPaid.toString());
     setAmountBalanced(record.amountBalanced.toString());
     setDueDate(record.dueDate);
+    setDatePaid(record.datePaid || "");
     setIsOpen(true);
   };
 
@@ -117,7 +121,8 @@ export default function PropertyManagementPage() {
             propertyName,
             amountPaid: parsedPaid,
             amountBalanced: parsedBalanced,
-            dueDate
+            dueDate,
+            datePaid
           }),
         });
         if (!res.ok) throw new Error("Failed to save changes to database.");
@@ -134,7 +139,8 @@ export default function PropertyManagementPage() {
             propertyName,
             amountPaid: parsedPaid,
             amountBalanced: parsedBalanced,
-            dueDate
+            dueDate,
+            datePaid
           }),
         });
         if (!res.ok) throw new Error("Failed to upload new record to database.");
@@ -155,13 +161,16 @@ export default function PropertyManagementPage() {
     const record = records.find(r => r.id === id);
     if (!record) return;
 
+    const todayStr = new Date().toISOString().split("T")[0];
+
     try {
       const res = await fetch(`/api/properties/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amountPaid: record.amountPaid + record.amountBalanced,
-          amountBalanced: 0
+          amountBalanced: 0,
+          datePaid: todayStr
         }),
       });
       if (!res.ok) throw new Error("Failed to update database.");
@@ -176,10 +185,10 @@ export default function PropertyManagementPage() {
   // Developer Seed Helper (adds mockup rows to PostgreSQL if empty)
   const handleSeedMockData = async () => {
     const mockInitialData = [
-      { tenantName: "Emeka Obi", propertyName: "Luxury Studio at Ikeja GRA", amountPaid: 150000, amountBalanced: 0, dueDate: "2026-08-15" },
-      { tenantName: "Chioma Adeleke", propertyName: "Modern En-suite by Unilag", amountPaid: 60000, amountBalanced: 25000, dueDate: "2026-07-20" },
-      { tenantName: "Tunde Bakare", propertyName: "Premium 1-Bed in Maitama", amountPaid: 200000, amountBalanced: 50000, dueDate: "2026-05-10" },
-      { tenantName: "Fatima Yusuf", propertyName: "Safe Shared Flat near UI", amountPaid: 45000, amountBalanced: 0, dueDate: "2026-09-01" }
+      { tenantName: "Emeka Obi", propertyName: "Luxury Studio at Ikeja GRA", amountPaid: 150000, amountBalanced: 0, dueDate: "2026-08-15", datePaid: "2025-08-15" },
+      { tenantName: "Chioma Adeleke", propertyName: "Modern En-suite by Unilag", amountPaid: 60000, amountBalanced: 25000, dueDate: "2026-07-20", datePaid: "2025-07-20" },
+      { tenantName: "Tunde Bakare", propertyName: "Premium 1-Bed in Maitama", amountPaid: 200000, amountBalanced: 50000, dueDate: "2026-05-10", datePaid: "2025-05-10" },
+      { tenantName: "Fatima Yusuf", propertyName: "Safe Shared Flat near UI", amountPaid: 45000, amountBalanced: 0, dueDate: "2026-09-01", datePaid: "2025-09-01" }
     ];
 
     try {
@@ -217,6 +226,7 @@ export default function PropertyManagementPage() {
   };
 
   const overdueCount = records.filter(r => getStatus(r) === "Overdue").length;
+  const overdueRecords = records.filter(r => getStatus(r) === "Overdue");
 
   // Filter records
   const filteredRecords = records.filter(r => {
@@ -324,6 +334,36 @@ export default function PropertyManagementPage() {
           </div>
         </div>
 
+        {/* Rent Due Messages for the Admin */}
+        {overdueRecords.length > 0 && (
+          <div className="mb-12 p-6 bg-red-50 border border-red-100 rounded-[28px]">
+            <div className="flex items-center gap-2 text-red-600 font-black text-xs uppercase tracking-widest mb-4">
+              <AlertTriangle size={18} />
+              <span>Rent Due Warnings ({overdueRecords.length})</span>
+            </div>
+            <div className="space-y-3">
+              {overdueRecords.map((r) => (
+                <div 
+                  key={r.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-red-200/50 shadow-sm"
+                >
+                  <div className="text-xs text-gray-600 font-semibold">
+                    Rent is due for <span className="text-brand-charcoal font-bold">{r.tenantName}</span> ({r.propertyName}). 
+                    Balance: <span className="text-red-600 font-bold">₦{r.amountBalanced.toLocaleString()}</span>. 
+                    Due: <span className="text-red-500 font-bold">{new Date(r.dueDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+                  </div>
+                  <button 
+                    onClick={() => handleMarkAsPaid(r.id)}
+                    className="self-start sm:self-auto px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer transition-all outline-none"
+                  >
+                    Clear Balance
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Toolbar & Filters */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
           <div className="relative w-full md:w-80">
@@ -365,6 +405,7 @@ export default function PropertyManagementPage() {
                   <th className="px-8 py-6">Tenant Name</th>
                   <th className="px-8 py-6">House / Hotel</th>
                   <th className="px-8 py-6">Amount Paid</th>
+                  <th className="px-8 py-6">Date Paid</th>
                   <th className="px-8 py-6">Balance</th>
                   <th className="px-8 py-6">Rent Due Date</th>
                   <th className="px-8 py-6">Status</th>
@@ -374,7 +415,7 @@ export default function PropertyManagementPage() {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={7} className="px-8 py-16 text-center text-gray-400">
+                    <td colSpan={8} className="px-8 py-16 text-center text-gray-400">
                       <Loader2 className="animate-spin text-brand-orange mx-auto mb-4" size={40} />
                       <p className="font-bold text-lg">Connecting to PostgreSQL...</p>
                     </td>
@@ -401,6 +442,20 @@ export default function PropertyManagementPage() {
                             </td>
                             <td className="px-8 py-6 font-semibold text-green-600">
                               ₦{record.amountPaid.toLocaleString()}
+                            </td>
+                            <td className="px-8 py-6 text-gray-500 font-medium">
+                              {record.datePaid ? (
+                                <span className="flex items-center gap-1.5">
+                                  <Calendar size={14} className="text-gray-300" />
+                                  {new Date(record.datePaid).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })}
+                                </span>
+                              ) : (
+                                <span className="text-gray-300 font-bold">—</span>
+                              )}
                             </td>
                             <td className={cn(
                               "px-8 py-6 font-semibold",
@@ -460,7 +515,7 @@ export default function PropertyManagementPage() {
                       })
                     ) : (
                       <tr>
-                        <td colSpan={7} className="px-8 py-16 text-center text-gray-400">
+                        <td colSpan={8} className="px-8 py-16 text-center text-gray-400">
                           <Building size={48} className="mx-auto text-gray-200 mb-4" />
                           <p className="font-bold text-lg">No records found</p>
                           <p className="text-sm">Try tweaking your search filter or upload a tenant status above.</p>
@@ -517,7 +572,7 @@ export default function PropertyManagementPage() {
                         value={tenantName}
                         onChange={(e) => setTenantName(e.target.value)}
                         placeholder="e.g. Emeka Obi"
-                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10"
+                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
                       />
                     </div>
                   </div>
@@ -532,7 +587,7 @@ export default function PropertyManagementPage() {
                         value={propertyName}
                         onChange={(e) => setPropertyName(e.target.value)}
                         placeholder="e.g. Luxury Studio at Ikeja GRA"
-                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10"
+                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
                       />
                     </div>
                   </div>
@@ -547,7 +602,7 @@ export default function PropertyManagementPage() {
                           value={amountPaid}
                           onChange={(e) => setAmountPaid(e.target.value)}
                           placeholder="e.g. 150000"
-                          className="w-full pl-12 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10"
+                          className="w-full pl-12 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
                         />
                       </div>
                     </div>
@@ -561,23 +616,38 @@ export default function PropertyManagementPage() {
                           value={amountBalanced}
                           onChange={(e) => setAmountBalanced(e.target.value)}
                           placeholder="e.g. 50000"
-                          className="w-full pl-12 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10"
+                          className="w-full pl-12 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-brand-charcoal uppercase tracking-wider">Rent Due Date</label>
-                    <div className="relative">
-                      <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
-                      <input 
-                        type="date" 
-                        required
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10"
-                      />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-brand-charcoal uppercase tracking-wider">Date Paid</label>
+                      <div className="relative">
+                        <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                        <input 
+                          type="date" 
+                          value={datePaid}
+                          onChange={(e) => setDatePaid(e.target.value)}
+                          className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-brand-charcoal uppercase tracking-wider">Rent Due Date</label>
+                      <div className="relative">
+                        <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                        <input 
+                          type="date" 
+                          required
+                          value={dueDate}
+                          onChange={(e) => setDueDate(e.target.value)}
+                          className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-brand-charcoal outline-none focus:ring-2 focus:ring-brand-orange/10 font-sans"
+                        />
+                      </div>
                     </div>
                   </div>
 

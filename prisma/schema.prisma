@@ -18,6 +18,7 @@ model PropertyRecord {
   amountPaid     Float
   amountBalanced Float
   dueDate        String
+  datePaid       String   @default("")
   createdAt      DateTime @default(now())
 }
 
