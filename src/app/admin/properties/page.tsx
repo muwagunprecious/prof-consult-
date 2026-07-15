@@ -547,7 +547,7 @@ export default function PropertyManagementPage() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative bg-white w-full max-w-xl rounded-[40px] shadow-2xl p-10 border border-gray-100 overflow-hidden"
+                className="relative bg-white w-full max-w-xl rounded-[32px] sm:rounded-[40px] shadow-2xl p-6 sm:p-10 border border-gray-100 max-h-[85vh] sm:max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex items-center justify-between mb-8 border-b border-gray-50 pb-4">
                   <h3 className="text-2xl font-extrabold text-brand-charcoal">
