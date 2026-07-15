@@ -78,7 +78,7 @@ const FeaturedListings = () => {
             <p className="font-bold text-sm">Fetching featured spaces...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {listings.map((item, index) => {
               const isWishlisted = wishlist.includes(item.id);
               // Use first image or fallback
@@ -89,14 +89,14 @@ const FeaturedListings = () => {
               return (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="group cursor-pointer flex flex-col h-full bg-white rounded-2xl overflow-hidden"
+                  className="group cursor-pointer flex flex-row items-center gap-4 bg-white p-3 rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-300 h-32 sm:h-36"
                 >
-                  {/* Image Container with Airbnb Style Floating Heart */}
-                  <Link href={`/listings/${item.id}`} className="relative aspect-[16/9] w-48 rounded-lg overflow-hidden mb-2 bg-gray-100 block">
+                  {/* Small Image Box */}
+                  <Link href={`/listings/${item.id}`} className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden shrink-0 bg-gray-100 block">
                     <img
                       src={primaryImage}
                       alt={item.title}
@@ -104,40 +104,41 @@ const FeaturedListings = () => {
                     />
                     <button 
                       onClick={(e) => toggleWishlist(item.id, e)}
-                      className="absolute top-4 right-4 p-2 bg-transparent hover:scale-110 transition-transform outline-none cursor-pointer"
+                      className="absolute top-2 right-2 p-1.5 bg-black/40 backdrop-blur-sm rounded-full hover:scale-110 transition-transform outline-none cursor-pointer"
                     >
                       <Heart 
-                        size={24} 
+                        size={14} 
                         className={cn(
                           "transition-colors",
                           isWishlisted 
                             ? "fill-brand-orange text-brand-orange" 
-                            : "text-white fill-black/25 stroke-[2]"
+                            : "text-white stroke-[2.5]"
                         )} 
                       />
                     </button>
                   </Link>
 
                   {/* Listing Details */}
-                  <div className="flex-1 flex flex-col">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="font-bold text-sm text-brand-charcoal truncate flex-1 group-hover:text-brand-orange transition-colors">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center gap-1 shrink-0 text-xs font-semibold text-brand-charcoal">
-                        <Star size={14} className="text-brand-orange fill-brand-orange" />
-                        <span>{item.rating}</span>
+                  <div className="flex-1 min-w-0 flex flex-col justify-between py-1 h-full">
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="font-bold text-sm text-[#1A1A1A] truncate flex-1 group-hover:text-brand-orange transition-colors">
+                          {item.title}
+                        </h3>
+                        <div className="flex items-center gap-0.5 shrink-0 text-xs font-semibold text-brand-charcoal">
+                          <Star size={13} className="text-brand-orange fill-brand-orange" />
+                          <span>{item.rating}</span>
+                        </div>
                       </div>
+                      <p className="text-xs text-gray-400 font-medium truncate">{item.location}</p>
+                      <p className="text-[11px] text-gray-400 font-medium mt-0.5">2 km from Unilag Campus</p>
                     </div>
 
-                    <p className="text-xs text-gray-400 font-medium mb-0.5">{item.location}</p>
-                    <p className="text-xs text-gray-400 font-medium mb-2">2 km from Unilag Campus</p>
-                    
-                    <div className="mt-auto flex items-center justify-between">
-                      <p className="text-sm text-brand-charcoal font-semibold">
-                        ₦{parseInt(item.price.replace(/,/g, "")).toLocaleString()} <span className="font-medium text-gray-400">/ month</span>
+                    <div className="flex items-center justify-between mt-2">
+                      <p className="text-sm text-[#1A1A1A] font-extrabold">
+                        ₦{parseInt(item.price.replace(/,/g, "")).toLocaleString()} <span className="font-medium text-xs text-gray-400">/mo</span>
                       </p>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange bg-brand-orange/5 px-2 py-0.5 rounded">
+                      <span className="text-[9px] font-black uppercase tracking-wider text-brand-orange bg-brand-orange/5 px-2 py-0.5 rounded">
                         {item.type}
                       </span>
                     </div>
