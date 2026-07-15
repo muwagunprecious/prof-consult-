@@ -1,45 +1,73 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Home as HomeIcon } from "lucide-react";
+import { Search, MapPin, Home as HomeIcon, Star } from "lucide-react";
 import Link from "next/link";
 
 const Hero = () => {
   return (
     <section className="relative bg-[#F6F6F3] p-3 sm:p-6 md:p-8 min-h-screen flex items-center justify-center">
-      {/* Framed container with the house image as the background */}
-      <div 
-        className="relative w-full max-w-7xl min-h-[85vh] rounded-[32px] sm:rounded-[48px] border-[8px] sm:border-[20px] border-white shadow-premium overflow-hidden px-4 sm:px-8 md:px-12 py-16 sm:py-24 flex flex-col items-center justify-between"
-        style={{
-          backgroundImage: "url('/modern_villa.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Semi-transparent overlay to ensure contrast and readability while showing the house background */}
-        <div className="absolute inset-0 bg-[#F6F6F3]/85 sm:bg-[#F6F6F3]/80 z-0" />
+      
+      {/* Outer framed container (Lume AI styled border and background) */}
+      <div className="relative w-full max-w-7xl bg-[#F6F6F3] rounded-[32px] sm:rounded-[48px] border-[8px] sm:border-[20px] border-white shadow-premium overflow-hidden px-4 sm:px-8 md:px-12 pt-16 pb-16 md:pb-20 flex flex-col items-center justify-between min-h-[85vh]">
         
-        {/* Top: Tag badge (z-10 to stay on top of overlay) */}
-        <div className="relative z-10 flex flex-col items-center">
+        {/* Soft background glow blobs */}
+        <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#EBE7DF]/35 rounded-full blur-3xl pointer-events-none" />
+
+        {/* 1. Top Badges & Tagline */}
+        <div className="relative z-10 flex flex-col items-center mb-6">
           <motion.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[10px] font-black uppercase tracking-widest text-[#FF6B00] bg-[#FF6B00]/10 px-4 py-1.5 rounded-full border border-[#FF6B00]/15 mb-6"
+            className="text-[10px] font-black uppercase tracking-widest text-[#FF6B00] bg-brand-orange/5 px-4 py-1.5 rounded-full border border-brand-orange/10"
           >
             ✦ Verified Student Housing Platform
           </motion.span>
         </div>
 
-        {/* Middle: Typographic Layout & Floating cards */}
-        <div className="relative w-full z-10 flex flex-col items-center text-center max-w-4xl my-auto">
-          {/* Floating Card Left */}
+        {/* 2. Central Title Typographic Layout (Space Grotesk & Cormorant Garamond) */}
+        <div className="relative w-full text-center z-10 flex flex-col items-center mb-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-[8vw] sm:text-[5vw] font-stylish-sans font-light tracking-tight text-brand-charcoal leading-none mb-2 select-none"
+          >
+            Find your next
+          </motion.h1>
+          
+          <motion.h1
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.15 }}
+            className="text-[10vw] sm:text-[5.5vw] font-editorial italic tracking-tight text-[#FF6B00] leading-none mb-2 sm:pl-[15%] select-none"
+          >
+            premium home
+          </motion.h1>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-[8vw] sm:text-[4.5vw] font-stylish-sans font-bold tracking-tight text-[#1A1A1A] leading-none select-none"
+          >
+            anywhere near campus.
+          </motion.h1>
+        </div>
+
+        {/* 3. Center Modern Villa Image & Floating Cards Wrapper */}
+        {/* Relative wrapper has standard dimensions; floating cards are anchored to this wrapper so they never drift and cause layout issues */}
+        <div className="relative w-full max-w-[600px] mx-auto z-20 mt-4 mb-12 flex justify-center">
+          
+          {/* Floating Card: Trust Stats (Left) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-lg border border-white/40 flex-col gap-1 w-52 text-left"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="hidden lg:flex absolute -left-28 bottom-8 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 z-30 flex-col gap-1 w-52 text-left"
           >
-            <span className="text-2xl font-black text-brand-charcoal">+1,200</span>
+            <span className="text-2xl font-black text-[#1A1A1A]">+1,200</span>
             <span className="text-[10px] text-gray-500 font-medium leading-relaxed">
               students trust our verified housing advisory daily
             </span>
@@ -50,12 +78,12 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Floating Card Right */}
+          {/* Floating Card: Match Score Integrity (Right) */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-lg border border-white/40 flex-col gap-1 w-56 text-left"
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="hidden lg:flex absolute -right-28 top-8 bg-white/95 backdrop-blur-md px-5 py-4 rounded-[20px] shadow-xl border border-white/40 z-30 flex-col gap-1 w-56 text-left"
           >
             <div className="flex justify-between items-center mb-2">
               <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Advisor Match</span>
@@ -67,66 +95,43 @@ const Hero = () => {
             <span className="text-[10px] font-extrabold text-[#FF6B00] uppercase tracking-wider">100% Certified Safe</span>
           </motion.div>
 
-          {/* Headline titles */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-[8vw] sm:text-[4.8vw] font-stylish-sans font-light tracking-tight text-[#1A1A1A] leading-none mb-2 select-none"
-          >
-            Find your next
-          </motion.h1>
-          
-          <motion.h1
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.1 }}
-            className="text-[11vw] sm:text-[6.5vw] font-editorial italic tracking-tight text-[#FF6B00] leading-none mb-3 select-none"
-          >
-            premium home
-          </motion.h1>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[8vw] sm:text-[4.5vw] font-stylish-sans font-bold tracking-tight text-[#1A1A1A] leading-none mb-8 select-none"
-          >
-            anywhere near campus.
-          </motion.h1>
-
-          {/* Friendly paragraph */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          {/* Centered Modern Villa Container */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-sm sm:text-base text-gray-600 font-medium max-w-lg leading-relaxed mb-6"
+            className="w-full aspect-[16/10] sm:aspect-[16/9] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-2xl border-4 border-white"
           >
-            Browse verified listings, connect with certified housing advisors, and lock in your booking stress-free.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mb-8"
-          >
-            <Link href="/listings" className="inline-flex items-center gap-1.5 text-[#1A1A1A] font-black text-sm border-b-2 border-[#1A1A1A] pb-0.5 hover:text-brand-orange hover:border-brand-orange transition-colors">
-              <span>Explore Listings</span>
-              <span className="text-xs">↗</span>
-            </Link>
+            <img
+              src="/modern_villa.png"
+              alt="Minimalist Modern Student Home"
+              className="w-full h-full object-cover"
+            />
           </motion.div>
         </div>
 
-        {/* Bottom: Search Pill */}
-        <div className="relative w-full max-w-3xl z-10 mt-4">
-          <div className="bg-white/95 backdrop-blur-md p-2 rounded-[24px] shadow-xl border border-white/40 hover:shadow-2xl transition-all duration-300">
+        {/* 4. Bottom Area: Subtext & Search Bar layout */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-30 mt-6">
+          
+          {/* Subtext and link block (Left 4 cols) */}
+          <div className="lg:col-span-4 text-left px-1">
+            <p className="text-xs sm:text-sm text-gray-500 font-medium leading-relaxed mb-3">
+              Browse verified listings, connect with certified housing advisors, and lock in your booking stress-free.
+            </p>
+            <Link href="/listings" className="inline-flex items-center gap-1 text-brand-charcoal font-black text-xs border-b-2 border-brand-charcoal pb-0.5 hover:text-brand-orange hover:border-brand-orange transition-colors">
+              <span>Explore Listings</span>
+              <span className="text-[10px]">↗</span>
+            </Link>
+          </div>
+
+          {/* Search Pill (Right 8 cols) */}
+          <div className="lg:col-span-8 bg-white/95 backdrop-blur-md p-2 rounded-[24px] shadow-xl border border-white/40 hover:shadow-2xl transition-all duration-300">
             <div className="flex flex-col sm:flex-row items-center gap-1.5">
               {/* Where */}
               <div className="flex-1 flex items-center px-4 gap-2.5 w-full border-b sm:border-b-0 sm:border-r border-gray-100 py-1.5 text-left cursor-pointer hover:bg-gray-50/50 rounded-xl transition-colors">
                 <MapPin className="text-[#FF6B00] shrink-0" size={16} />
                 <div className="flex-1">
-                  <span className="block text-[8px] font-black uppercase tracking-wider text-brand-charcoal">Where</span>
+                  <span className="block text-[8px] font-black uppercase tracking-wider text-[#1A1A1A]">Where</span>
                   <input
                     type="text"
                     placeholder="Search neighborhoods..."
@@ -154,7 +159,7 @@ const Hero = () => {
                 <HomeIcon className="text-[#FF6B00] shrink-0" size={16} />
                 <div className="flex-1">
                   <span className="block text-[8px] font-black uppercase tracking-wider text-brand-charcoal">Room Type</span>
-                  <select className="bg-transparent border-none focus:ring-0 w-full text-brand-charcoal text-xs outline-none appearance-none font-semibold p-0 mt-0.5 cursor-pointer">
+                  <select className="bg-transparent border-none focus:ring-0 w-full text-[#1A1A1A] text-xs outline-none appearance-none font-semibold p-0 mt-0.5 cursor-pointer">
                     <option value="">Select type</option>
                     <option value="studio">Studio</option>
                     <option value="ensuite">En-suite</option>
@@ -172,6 +177,7 @@ const Hero = () => {
               </Link>
             </div>
           </div>
+          
         </div>
 
       </div>
