@@ -218,18 +218,19 @@ const PropertyDetails = () => {
           </div>
 
           {/* Amenities */}
-          <div className="border-b border-gray-100 pb-6 mb-6">
-            <h3 className="text-base font-extrabold text-brand-charcoal mb-4">What this place offers</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {(property.amenities && property.amenities.length > 0 ? property.amenities : amenitiesMap.map(a => a.name))
-                .map((amenity, index) => (
+          {property.amenities && property.amenities.length > 0 && (
+            <div className="border-b border-gray-100 pb-6 mb-6">
+              <h3 className="text-base font-extrabold text-brand-charcoal mb-4">What this place offers</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {property.amenities.map((amenity, index) => (
                   <div key={index} className="flex items-center gap-3 text-gray-500 font-semibold text-sm">
-                    <div className="text-brand-orange shrink-0"><Wifi size={18} /></div>
-                    <span className="text-xs">{typeof amenity === "string" ? amenity : amenity}</span>
+                    <div className="text-brand-orange shrink-0"><CheckCircle2 size={16} /></div>
+                    <span className="text-xs">{amenity}</span>
                   </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Pricing */}
           <div className="border-b border-gray-100 pb-6 mb-6 space-y-3">
@@ -384,18 +385,19 @@ const PropertyDetails = () => {
                 <p className="whitespace-pre-line">{property.description}</p>
               </div>
 
-              <div className="border-b border-gray-100 pb-8">
-                <h3 className="text-lg font-bold text-brand-charcoal mb-6">What this place offers</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {(property.amenities && property.amenities.length > 0 ? property.amenities : amenitiesMap.map(a => a.name))
-                    .map((amenity, index) => (
+              {property.amenities && property.amenities.length > 0 && (
+                <div className="border-b border-gray-100 pb-8">
+                  <h3 className="text-lg font-bold text-brand-charcoal mb-6">What this place offers</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {property.amenities.map((amenity, index) => (
                       <div key={index} className="flex items-center gap-4 text-gray-500 font-semibold text-sm">
-                        <div className="text-brand-orange shrink-0"><Wifi size={20} /></div>
-                        <span>{typeof amenity === "string" ? amenity : amenity}</span>
+                        <div className="text-brand-orange shrink-0"><CheckCircle2 size={18} /></div>
+                        <span>{amenity}</span>
                       </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Right sticky card */}
