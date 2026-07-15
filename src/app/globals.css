@@ -31,6 +31,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-jakarta), sans-serif;
 }
 
+.font-editorial {
+  font-family: var(--font-instrument), serif;
+}
+
 .glass-nav {
   @apply backdrop-blur-md bg-white/70 border-b border-white/20 sticky top-0 z-50;
 }
