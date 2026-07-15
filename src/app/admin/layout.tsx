@@ -5,8 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   BarChart3, PlusCircle, List, Settings, 
-  Users, Home, Building, Lock, ArrowRight, ShieldAlert
+  Users, Home, Building, Lock, ArrowRight, ShieldAlert,
+  Menu, X as CloseIcon
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export default function AdminLayout({
@@ -19,6 +21,7 @@ export default function AdminLayout({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem("admin_auth") === "true";
@@ -65,7 +68,7 @@ export default function AdminLayout({
     );
   }
 
-  // Beautiful Lock Screen if not authenticated
+  // Lock Screen if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#F6F6F3] p-4 flex items-center justify-center relative overflow-hidden">
@@ -125,10 +128,93 @@ export default function AdminLayout({
     );
   }
 
-  // Sidebar Layout for authenticated users
   return (
-    <div className="min-h-screen bg-brand-beige flex">
-      {/* Admin Sidebar */}
+    <div className="min-h-screen bg-[#F6F6F3] flex flex-col lg:flex-row">
+      
+      {/* 1. Mobile & Tablet Top Menu Bar */}
+      <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 z-40 lg:hidden shadow-sm">
+        <Link href="/admin" className="font-stylish-sans font-black text-lg text-brand-charcoal">
+          Prof Consult <span className="text-brand-orange">Admin</span>
+        </Link>
+        
+        <button 
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="p-2 text-gray-400 hover:text-brand-orange hover:bg-brand-orange/5 rounded-xl transition-all outline-none cursor-pointer"
+          title="Toggle Navigation Menu"
+        >
+          {menuOpen ? <CloseIcon size={22} /> : <Menu size={22} />}
+        </button>
+      </header>
+
+      {/* Mobile Drawer Overlay and Navigation Links */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="fixed inset-0 bg-brand-charcoal/45 backdrop-blur-sm z-30 lg:hidden"
+            />
+            
+            {/* Slide-out Menu Panel */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", bounce: 0.05, duration: 0.4 }}
+              className="fixed left-0 top-16 bottom-0 w-72 bg-white shadow-2xl z-35 border-r border-gray-100 p-6 flex flex-col justify-between lg:hidden"
+            >
+              <div className="space-y-2.5 flex-1 overflow-y-auto pt-2">
+                {sidebarLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl font-bold transition-all text-xs",
+                        isActive 
+                          ? "bg-brand-orange text-white shadow-lg shadow-brand-orange/20" 
+                          : "text-gray-400 hover:text-brand-orange hover:bg-brand-orange/5"
+                      )}
+                    >
+                      {link.icon}
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </div>
+              
+              <div className="border-t border-gray-50 pt-6 space-y-2">
+                 <Link 
+                   href="/" 
+                   onClick={() => setMenuOpen(false)}
+                   className="w-full flex items-center gap-4 px-5 py-3 rounded-2xl font-bold text-xs text-gray-400 hover:text-brand-charcoal transition-all"
+                 >
+                   <Home size={18} />
+                   Back to Site
+                 </Link>
+                 <button 
+                   onClick={() => {
+                     setMenuOpen(false);
+                     handleLogout();
+                   }}
+                   className="w-full flex items-center gap-4 px-5 py-3 rounded-2xl font-bold text-xs text-red-500 hover:bg-red-50 transition-all text-left cursor-pointer outline-none"
+                 >
+                   <Lock size={18} />
+                   Lock Panel
+                 </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* 2. Desktop Sidebar Menu (LG screens and up) */}
       <aside className="hidden lg:flex w-72 bg-white flex-col border-r border-gray-100 p-8 pt-28 sticky top-0 h-screen">
         <div className="space-y-4 flex-1">
           {sidebarLinks.map((link) => {
@@ -166,8 +252,9 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main Content Viewport */}
-      <main className="flex-1 overflow-y-auto">
+      {/* 3. Main Content Viewport */}
+      {/* On mobile, add pt-16 to offset the fixed top header menu bar */}
+      <main className="flex-1 overflow-y-auto pt-16 lg:pt-0">
         {children}
       </main>
     </div>
