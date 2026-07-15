@@ -365,17 +365,10 @@ const PropertyDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left column */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-8">
-                <div>
-                  <h2 className="text-xl font-bold text-brand-charcoal mb-1">
-                    Private {property.type} room hosted by Sarah Jenkins
-                  </h2>
-                  <p className="text-sm text-gray-400 font-semibold">1 guest · 1 bedroom · 1 bed · 1 private bath</p>
-                </div>
-                <div className="relative">
-                  <img src="https://i.pravatar.cc/150?u=advis" className="w-14 h-14 rounded-full object-cover border-2 border-brand-orange/20 shadow-sm" alt="Host" />
-                  <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
-                </div>
+              <div className="border-b border-gray-100 pb-6 flex items-center justify-between">
+                <h2 className="text-lg font-bold text-brand-charcoal">
+                  Hosted by Prof Consult
+                </h2>
               </div>
 
               <div className="prose prose-sm text-gray-500 font-medium leading-relaxed border-b border-gray-100 pb-8 space-y-4">
