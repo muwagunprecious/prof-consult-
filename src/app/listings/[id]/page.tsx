@@ -132,79 +132,77 @@ const PropertyDetails = () => {
     <div className="min-h-screen bg-white">
 
       {/* ===== MOBILE LAYOUT ===== */}
-      <div className="block md:hidden relative">
-        {/* Mobile peeking image scroll gallery */}
-        <div className="relative w-full pt-14 bg-white">
-          {/* Scrollable image strip — shows peek of next image */}
+      <div className="block md:hidden relative bg-[#F6F6F3]">
+        {/* Mobile full-bleed image scroll gallery */}
+        <div className="relative w-full h-[55vh] overflow-hidden bg-gray-100">
+          {/* Scrollable image strip — enables native smooth touch swipe with snap points */}
           <div
             onScroll={handleScroll}
-            className="flex overflow-x-auto snap-x snap-mandatory gap-0 px-0 pb-3 scrollbar-none"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-none"
+            style={{ 
+              scrollbarWidth: "none", 
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch"
+            }}
           >
             {mobileImages.map((photoUrl, idx) => (
               <div
                 key={idx}
-                className="snap-start shrink-0 rounded-2xl overflow-hidden bg-gray-100"
-                style={{ width: "100%", height: "45vw", maxHeight: "280px" }}
+                className="w-full h-full shrink-0 snap-start snap-always relative"
               >
                 <img src={photoUrl} className="w-full h-full object-cover" alt={`Photo ${idx + 1}`} />
               </div>
             ))}
-            {/* Trailing spacer so last image can fully snap into view */}
-            <div className="shrink-0 w-4" />
           </div>
 
-          {/* Slide counter badge */}
-          <div className="absolute bottom-6 right-6 z-20 bg-brand-charcoal/75 text-white font-bold text-[11px] px-3 py-1.5 rounded-full tracking-wider pointer-events-none">
+          {/* Slide counter badge styled exactly like the screenshot */}
+          <div className="absolute bottom-10 right-4 z-20 bg-black/60 text-white font-bold text-xs px-2.5 py-1.2 rounded-[6px] tracking-wider pointer-events-none select-none">
             {activeImageIdx + 1} / {mobileImages.length}
           </div>
         </div>
 
-        {/* Floating back + action buttons sit ABOVE the scroll strip */}
-        <div className="absolute top-4 left-0 right-0 flex items-center justify-between px-4 z-30">
+        {/* Floating action buttons overlaid on top of the image gallery */}
+        <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-4 z-30">
           <Link href="/listings">
-            <div className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md">
+            <div className="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md">
               <ChevronLeft size={20} className="text-brand-charcoal" />
             </div>
           </Link>
           <div className="flex gap-2">
-            <button className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md outline-none cursor-pointer">
+            <button className="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md outline-none cursor-pointer">
               <Share2 size={16} className="text-brand-charcoal" />
             </button>
             <button
               onClick={() => setIsSaved(!isSaved)}
-              className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md outline-none cursor-pointer"
+              className="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md outline-none cursor-pointer"
             >
               <Heart size={16} className={isSaved ? "fill-brand-orange text-brand-orange" : "text-brand-charcoal"} />
             </button>
           </div>
         </div>
 
-        {/* White content card — sits directly below the image strip, no overlap needed */}
-        <div className="relative z-10 bg-white pt-5 px-5 pb-6 border-t border-gray-100">
-          {/* Property type pill */}
-          <p className="text-xs font-bold text-gray-500 mb-2">
-            Entire {property.type} · {property.location}
-          </p>
-
-          {/* Title */}
-          <h1 className="text-2xl font-extrabold text-brand-charcoal leading-tight mb-3">
+        {/* Overlapping white card with round border at the top and centered text */}
+        <div className="relative z-10 bg-white rounded-t-[32px] -mt-6 pt-8 px-6 pb-6 shadow-sm border-t border-gray-100/50 flex flex-col items-center text-center">
+          {/* Centered Title */}
+          <h1 className="text-xl sm:text-2xl font-black text-brand-charcoal leading-snug mb-3 max-w-sm">
             {property.title}
           </h1>
 
-          {/* Specs row */}
-          <p className="text-sm text-gray-400 font-medium mb-1">
-            {property.location}
-          </p>
-          <p className="text-sm text-gray-400 font-medium mb-5">
-            1 guest · 1 bedroom · 1 bed · 1 bath
+          {/* Centered Property type subtitle */}
+          <p className="text-xs text-gray-500 font-bold mb-1">
+            Entire {property.type} in {property.location}
           </p>
 
-          {/* Rating row */}
-          <div className="flex items-center gap-1 text-sm font-bold text-brand-charcoal mb-6 border-b border-gray-100 pb-6">
-            <Star size={16} className="text-brand-orange fill-brand-orange" />
+          {/* Centered Specs row */}
+          <p className="text-xs text-gray-400 font-semibold mb-5">
+            2 guests · 1 bedroom · 1 bed · 1 bath
+          </p>
+
+          {/* Centered Rating row */}
+          <div className="flex items-center gap-1 text-xs font-black text-brand-charcoal mb-6 border-b border-gray-100 pb-6 w-full justify-center">
+            <Star size={14} className="text-brand-orange fill-brand-orange shrink-0" />
             <span>{property.rating}</span>
-            <span className="text-gray-400 font-medium ml-1">· 48 reviews</span>
+            <span className="text-gray-400 font-bold ml-1">· 48 reviews</span>
           </div>
 
 
